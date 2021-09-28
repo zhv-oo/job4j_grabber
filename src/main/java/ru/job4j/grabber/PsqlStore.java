@@ -10,7 +10,8 @@ public class PsqlStore implements Store, AutoCloseable {
 
     private Connection cnn;
 
-    public PsqlStore(Properties config) {
+    public PsqlStore(String conf) {
+        Properties config = getConfig(conf);
         try {
             Class.forName(config.getProperty("driver-class-name"));
             cnn = DriverManager.getConnection(
@@ -24,9 +25,9 @@ public class PsqlStore implements Store, AutoCloseable {
 
     }
 
-    private static Properties getConfig() {
+    private static Properties getConfig(String conf) {
         try (InputStream in = PsqlStore.class.getClassLoader()
-                .getResourceAsStream("./psql.properties")) {
+                .getResourceAsStream(conf)) {
             Properties config = new Properties();
             config.load(in);
             return config;
@@ -106,7 +107,7 @@ public class PsqlStore implements Store, AutoCloseable {
     }
 
     public static void main(String[] args) {
-        PsqlStore psqlStore = new PsqlStore(getConfig());
+        PsqlStore psqlStore = new PsqlStore("./psql.properties");
         SqlRuParse sqlRuParse = new SqlRuParse(new SqlRuDateTimeParser());
         List<Post> posts = sqlRuParse.list("https://www.sql.ru/forum/job-offers/");
         psqlStore.save(posts.get(1));
