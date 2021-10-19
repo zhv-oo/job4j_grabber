@@ -13,10 +13,12 @@ import java.util.List;
 public class SoftDemo {
 
     public static void main(String[] args) {
-        //example1();
         example2();
     }
 
+    /**
+     * Пример работы 1.
+     */
     private static void example1() {
         Object strong = new Object();
         SoftReference<Object> soft = new SoftReference<>(strong);
@@ -24,6 +26,9 @@ public class SoftDemo {
         System.out.println(soft.get());
     }
 
+    /**
+     * Пример работы 2.
+     */
     private static void example2() {
         List<SoftReference<Object>> objects = new ArrayList<>();
         for (int i = 0; i < 100_000_000; i++) {
