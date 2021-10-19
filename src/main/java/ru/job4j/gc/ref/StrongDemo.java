@@ -14,9 +14,12 @@ public class StrongDemo {
 
     public static void main(String[] args) throws InterruptedException {
         example1();
-        //example2();
     }
 
+    /**
+     * Пример работы 1.
+     * @throws InterruptedException
+     */
     private static void example1() throws InterruptedException {
         Object[] objects = new Object[100];
         for (int i = 0; i < 100; i++) {
@@ -34,6 +37,10 @@ public class StrongDemo {
         TimeUnit.SECONDS.sleep(5);
     }
 
+    /**
+     * Пример работы 2.
+     * @throws InterruptedException
+     */
     private static void example2() throws InterruptedException {
         Object[] objects = new Object[100];
         for (int i = 0; i < 100; i++) {
@@ -54,6 +61,9 @@ public class StrongDemo {
         TimeUnit.SECONDS.sleep(5);
     }
 
+    /**
+     * Пример работы 3.
+     */
     private static void example3() {
         List<String> strings = new ArrayList<>();
         while (true) {
