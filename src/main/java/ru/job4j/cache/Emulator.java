@@ -65,7 +65,7 @@ public class Emulator {
      * получения данных их кэша и вывод пользователю
      */
     public void getFromCache() {
-        System.out.println(cache.get("adress.txt"));
+        System.out.println(cache.load("adress.txt"));
     }
 
     public static void main(String[] args) throws FileNotFoundException {
