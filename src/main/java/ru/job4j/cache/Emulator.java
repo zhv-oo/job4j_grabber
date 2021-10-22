@@ -1,12 +1,9 @@
 package ru.job4j.cache;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.StringJoiner;
 
 /**
  * \* User: zhv
@@ -29,9 +26,8 @@ public class Emulator {
 
     /**
      * Метод загрузки файлов в кэш
-     * @throws FileNotFoundException
      */
-    public void loadFile() throws FileNotFoundException {
+    public void loadFile() {
         File file = new File(path);
         if (!file.exists()) {
             throw new IllegalArgumentException(
@@ -42,23 +38,8 @@ public class Emulator {
                     String.format("Not directory %s", file.getAbsoluteFile()));
         }
         for (File subfile : Objects.requireNonNull(file.listFiles())) {
-            cache.put(subfile.getName(), this.getString(subfile.getAbsolutePath()));
+            cache.put(subfile.getName(), cache.load(subfile.getName()));
         }
-    }
-
-    /**
-     * Метод получения данных из файла.
-     * @param path абсолютный путь к файлу.
-     * @return содержимое в ввиде строки.
-     */
-    private String getString(String path) {
-        StringJoiner out = new StringJoiner(System.lineSeparator());
-        try (BufferedReader read = new BufferedReader(new FileReader(path))) {
-            read.lines().forEach(out::add);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return out.toString();
     }
 
     /**

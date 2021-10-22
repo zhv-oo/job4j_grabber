@@ -13,6 +13,7 @@ import java.util.Map;
 
 public abstract class AbstractCache<K, V> {
 
+    @SuppressWarnings("checkstyle:VisibilityModifier")
     private final Map<K, SoftReference<V>> cache = new HashMap<>();
 
     public void put(K key, V value) {
@@ -21,8 +22,11 @@ public abstract class AbstractCache<K, V> {
     }
 
     public V get(K key) {
-        SoftReference<V> softRef = cache.get(key);
-        return softRef.get();
+        V res = cache.get(key).get();
+        if (res == null) {
+            res = load(key);
+        }
+        return res;
     }
 
     protected abstract V load(K key);
