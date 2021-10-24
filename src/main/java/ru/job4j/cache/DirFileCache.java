@@ -1,10 +1,9 @@
 package ru.job4j.cache;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * \* User: zhv
@@ -35,28 +34,12 @@ public class DirFileCache extends AbstractCache<String, String> {
             throw new IllegalArgumentException(
                     String.format("Not directory %s", file.getAbsoluteFile()));
         }
-        for (File subfile : Objects.requireNonNull(file.listFiles())) {
-            if (subfile.getName().equals(key)) {
-                res = this.getString(subfile.getAbsolutePath());
-                break;
-            }
-        }
-        return res;
-    }
-
-    /**
-     * Метод получения данных из файла.
-     * @param path абсолютный путь к файлу.
-     * @return содержимое в ввиде строки.
-     */
-    public String getString(String path) {
-        StringJoiner out = new StringJoiner(System.lineSeparator());
-        try (BufferedReader read = new BufferedReader(new FileReader(path))) {
-            read.lines().forEach(out::add);
-        } catch (Exception e) {
+        try {
+            res = Files.readString(Path.of(cachingDir, key));
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return out.toString();
+        super.put(key, res);
+        return res;
     }
-
 }

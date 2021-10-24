@@ -1,8 +1,6 @@
 package ru.job4j.cache;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Objects;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -19,41 +17,43 @@ public class Emulator {
      * Метод получения директории для загрузки от пользователя.
      */
     public void getDir() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter path to dir: ");
-        this.path = sc.nextLine();
+        this.path = ask("Enter path to dir: ");
     }
 
     /**
      * Метод загрузки файлов в кэш
      */
-    public void loadFile() {
-        File file = new File(path);
-        if (!file.exists()) {
-            throw new IllegalArgumentException(
-                    String.format("Not exist %s", file.getAbsoluteFile()));
-        }
-        if (!file.isDirectory()) {
-            throw new IllegalArgumentException(
-                    String.format("Not directory %s", file.getAbsoluteFile()));
-        }
-        for (File subfile : Objects.requireNonNull(file.listFiles())) {
-            cache.put(subfile.getName(), cache.load(subfile.getName()));
-        }
+    public void loadFile(String fileName) {
+        cache.load(fileName);
     }
 
     /**
      * получения данных их кэша и вывод пользователю
      */
     public void getFromCache() {
-        System.out.println(cache.load("adress.txt"));
+        System.out.println(cache.get(ask("Enter file name: ")));
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    /**
+     * Получение данных от пользователя.
+     * @param ask вопрос для пользователя.
+     * @return ответ введеный в консоль.
+     */
+    private static String ask(String ask) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println(ask);
+        return sc.nextLine();
+    }
+
+    public static void main(String[] args) throws IOException {
+        String line = "";
         Emulator em = new Emulator();
-        em.getDir();
-        em.cache = new DirFileCache(em.path);
-        em.loadFile();
-        em.getFromCache();
+        while (!line.equals("q")) {
+            em.getDir();
+            em.cache = new DirFileCache(em.path);
+            em.loadFile(ask("Enter file name for load: "));
+            em.getFromCache();
+            line = ask("q to exit, any key to continue.");
+        }
     }
 }
