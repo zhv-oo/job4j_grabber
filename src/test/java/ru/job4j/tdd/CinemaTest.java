@@ -40,4 +40,44 @@ public class CinemaTest {
         List<Session> sessions = cinema.find(session -> true);
         assertThat(sessions, is(Arrays.asList(new Session3D(), new Session3D(), new Session3D())));
     }
+
+    @Test
+    public void checkDate() throws Exception {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+        assertThat(true, is(cinema.checkDate(ticket)));
+    }
+
+    @Test(expected = Exception.class)
+    public void checkDateWhenInvalid() throws Exception {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+        assertThat(false, is(cinema.checkDate(ticket)));
+    }
+
+    @Test
+    public void checkPlace() throws Exception {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+        assertThat(false, is(cinema.checkPlace(new Session3D(), ticket)));
+    }
+
+    @Test(expected = Exception.class)
+    public void checkWhenEqualsPlace() throws Exception {
+        Account account = new AccountCinema();
+        Cinema cinema = new Cinema3D();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, 10, 10, 23, 00);
+        Ticket ticket = cinema.buy(account, 1, 1, date);
+        assertThat(true, is(cinema.checkPlace(new Session3D(), ticket)));
+    }
 }
