@@ -26,14 +26,4 @@ public class Cinema3D implements Cinema {
     public void add(Session session) {
 
     }
-
-    @Override
-    public boolean checkPlace(Session session, Ticket ticket) throws Exception {
-        return false;
-    }
-
-    @Override
-    public Calendar checkDate(Ticket ticket) throws Exception {
-        return null;
-    }
 }

@@ -10,8 +10,4 @@ public interface Cinema {
     Ticket buy(Account account, int row, int column, Calendar date);
 
     void add(Session session);
-
-    boolean checkPlace(Session session, Ticket ticket) throws Exception;
-
-    Calendar checkDate(Ticket ticket) throws Exception;
 }
